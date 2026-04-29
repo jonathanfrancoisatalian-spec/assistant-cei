@@ -1,6 +1,7 @@
 import json
 import streamlit as st
 from openai import OpenAI
+st.write("DEBUG KEY:", os.getenv("OPENAI_API_KEY"))
 
 
 # =========================
