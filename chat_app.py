@@ -81,26 +81,31 @@ if question and not st.session_state.processing:
         context += f"\nNOTE:\n{text}\n---\n"
 
     # Prompt
-    prompt = f"""
+prompt = f"""
 Tu es un assistant technique.
+
+Tu DOIS répondre en DEUX parties STRICTEMENT.
 
 ------------------------------
 RÉPONSE 1 - BASÉE SUR LES NOTES
 ------------------------------
-- Utilise UNIQUEMENT les NOTES
-- Si l'information n'existe pas, écris EXACTEMENT :
+- Analyse les NOTES en détail
+- Si une information correspond à la question, utilise-la
+- Sinon écris EXACTEMENT :
 Je n'ai pas encore cette information dans ma base.
 
 ------------------------------
 RÉPONSE 2 - CONNAISSANCE GÉNÉRALE
 ------------------------------
-- Utilise tes connaissances générales
-- Tu peux corriger les notes si nécessaire
+- Donne une réponse avec tes connaissances générales
+- Tu peux corriger les notes si elles sont fausses
 
-NOTES:
+------------------------------
+NOTES :
 {context}
 
-QUESTION:
+------------------------------
+QUESTION :
 {question}
 """
 
