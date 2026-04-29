@@ -137,16 +137,12 @@ RÉPONSE :
 
 
     # Appel IA
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[
-            {"role": "system", "content": "Tu es un assistant professionnel fiable."},
-            {"role": "user", "content": prompt}
-        ]
-    )
+response = client.responses.create(
+    model="gpt-4o-mini",
+    input=prompt
+)
 
-
-    answer = response.choices[0].message.content.strip()
+answer = response.output[0].content[0].text
 
 
     # Sauver réponse
