@@ -74,30 +74,40 @@ if question and not st.session_state.processing:
     with st.chat_message("user"):
         st.markdown(question)
 
-    # Construire le contexte
+    # =========================
+    # CONSTRUCTION CONTEXTE
+    # =========================
+
     context = ""
+
     for entry in data:
-        text = entry.get("note") or entry.get("raw_text", "")
+        text = entry.get("note") or entry.get("raw_text") or ""
         context += f"\nNOTE:\n{text}\n---\n"
 
-    # Prompt
-prompt = f"""
-Tu es un assistant technique.
+    # DEBUG (optionnel)
+    # st.write("DEBUG NOTES:", context[:500])
 
-Tu DOIS répondre en DEUX parties STRICTEMENT.
+    # =========================
+    # PROMPT AMÉLIORÉ
+    # =========================
 
-------------------------------
-RÉPONSE 1 - BASÉE SUR LES NOTES
-------------------------------
-- Analyse les NOTES en détail
-- Si une information correspond à la question, utilise-la
-- Sinon écris EXACTEMENT :
+    prompt = f"""
+Tu es un assistant technique basé sur une base de notes.
+
+OBLIGATIONS STRICTES :
+- Tu DOIS répondre en DEUX parties
+- Tu DOIS respecter exactement le format
+- Tu DOIS analyser les NOTES avant de répondre
+
+FORMAT DE RÉPONSE :
+
+### RÉPONSE 1 - BASÉE SUR LES NOTES
+- Utilise uniquement les NOTES
+- Si aucune information correspond :
 Je n'ai pas encore cette information dans ma base.
 
-------------------------------
-RÉPONSE 2 - CONNAISSANCE GÉNÉRALE
-------------------------------
-- Donne une réponse avec tes connaissances générales
+### RÉPONSE 2 - CONNAISSANCE GÉNÉRALE
+- Donne une réponse avec tes connaissances
 - Tu peux corriger les notes si elles sont fausses
 
 ------------------------------
@@ -109,7 +119,10 @@ QUESTION :
 {question}
 """
 
-    # Appel IA (nouvelle API)
+    # =========================
+    # APPEL IA
+    # =========================
+
     response = client.responses.create(
         model="gpt-4o-mini",
         input=prompt
@@ -117,7 +130,10 @@ QUESTION :
 
     answer = response.output[0].content[0].text
 
-    # Sauver réponse
+    # =========================
+    # AFFICHAGE
+    # =========================
+
     st.session_state.messages.append({
         "role": "assistant",
         "content": answer
@@ -133,11 +149,12 @@ QUESTION :
 # =========================
 
 with st.expander("📚 Infos base de connaissances"):
+
     st.write("Nombre de notes :", len(data))
 
     if len(data) == 0:
         st.info("La base est vide pour le moment.")
     else:
         for i, entry in enumerate(data, 1):
-            text = entry.get("note") or entry.get("raw_text", "")
+            text = entry.get("note") or entry.get("raw_text") or ""
             st.markdown(f"**{i}.** {text[:150]}...")
