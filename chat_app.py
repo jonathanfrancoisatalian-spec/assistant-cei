@@ -137,6 +137,7 @@ RÉPONSE :
 
 
     # Appel IA
+# Appel IA
 response = client.responses.create(
     model="gpt-4o-mini",
     input=prompt
@@ -144,18 +145,16 @@ response = client.responses.create(
 
 answer = response.output[0].content[0].text
 
+# Sauver réponse
+st.session_state.messages.append({
+    "role": "assistant",
+    "content": answer
+})
 
-    # Sauver réponse
-    st.session_state.messages.append({
-        "role": "assistant",
-        "content": answer
-    })
+with st.chat_message("assistant"):
+    st.markdown(answer)
 
-    with st.chat_message("assistant"):
-        st.markdown(answer)
-
-
-    st.session_state.processing = False
+st.session_state.processing = False
 
 
 # =========================
