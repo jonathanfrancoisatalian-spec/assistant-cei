@@ -34,6 +34,17 @@ st.title("🧠 Assistant Intelligent")
 st.markdown("Base de connaissances personnelle")
 
 # =========================
+# CHOIX DU MODE (NOUVEAU)
+# =========================
+
+mode = st.selectbox("Mode", ["Rapide ⚡", "Précis 🧠"])
+
+if mode == "Rapide ⚡":
+    model = "gpt-4o-mini"
+else:
+    model = "gpt-4o"
+
+# =========================
 # SESSION STATE
 # =========================
 
@@ -79,16 +90,12 @@ if question and not st.session_state.processing:
     # =========================
 
     context = ""
-
     for entry in data:
         text = entry.get("note") or entry.get("raw_text") or ""
         context += f"\nNOTE:\n{text}\n---\n"
 
-    # DEBUG (optionnel)
-    # st.write("DEBUG NOTES:", context[:500])
-
     # =========================
-    # PROMPT AMÉLIORÉ
+    # PROMPT
     # =========================
 
     prompt = f"""
@@ -124,7 +131,7 @@ QUESTION :
     # =========================
 
     response = client.responses.create(
-        model="gpt-4o",
+        model=model,
         input=prompt
     )
 
