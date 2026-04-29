@@ -8,7 +8,7 @@ from openai import OpenAI
 # =========================
 
 # ⚠️ Mets ta vraie clé OpenAI ici
-OPENAI_KEY = "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"
+OPENAI_KEY = "OPENAI_API_KEY"
 
 DB_FILE = "knowledge.json"
 
