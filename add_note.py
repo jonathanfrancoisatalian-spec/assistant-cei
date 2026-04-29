@@ -8,7 +8,7 @@ from openai import OpenAI
 # CONFIG
 # =========================
 
-client = OpenAI(api_key="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")  # ⚠️ mets ta clé via variable d'environnement idéalement
+client = OpenAI(api_key="OPENAI_API_KEY")  # ⚠️ mets ta clé via variable d'environnement idéalement
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 AUDIO_DIR = os.path.join(BASE_DIR, "audios")
